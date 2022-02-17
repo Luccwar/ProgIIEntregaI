@@ -109,7 +109,9 @@ router.post('/editarCliente/:id', (req, res)=>{
                 erros.push({texto: "Seu telefone deve ter onze (11) ou treze (13) dígitos, certifique-se que colocar seu DDD, você também pode inserir seu código de país."})
             }
             if(erros.length > 0){
-                res.render("editarCliente", {client: client})
+                Cliente.findOne({ where: { id } }).then(client => {
+                    res.render("editarCliente", {erros: erros, form: client})
+                })
             }else{
                 Cliente.update({
                     nome: req.body.nome,
